@@ -2,50 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems; // Для использования IPointerClickHandler
+using UnityEngine.EventSystems; // Р”Р»СЏ СЂРµР°Р»РёР·Р°С†РёРё IPointerClickHandler
 
 public class Slot : MonoBehaviour, IPointerClickHandler
 {
-    public bool isEmpty = true; // Флаг, показывающий, пуст ли слот
-    public Image slotImage; // Ссылка на компонент Image
-    public Text slotText; // Ссылка на компонент Text, если есть
+    public bool isEmpty = true; // Р¤Р»Р°Рі, СѓРєР°Р·С‹РІР°СЋС‰РёР№, РїСѓСЃС‚РѕР№ Р»Рё СЃР»РѕС‚
+    public Image slotImage; // РЎСЃС‹Р»РєР° РЅР° РєРѕРјРїРѕРЅРµРЅС‚ Image СЃР»РѕС‚Р°
+    public Text slotText; // РЎСЃС‹Р»РєР° РЅР° РєРѕРјРїРѕРЅРµРЅС‚ Text СЃР»РѕС‚Р°, РµСЃР»Рё РѕРЅ СЃСѓС‰РµСЃС‚РІСѓРµС‚
 
-    private Inventory inventory; // Ссылка на инвентарь
+    private Inventory inventory; // РЎСЃС‹Р»РєР° РЅР° РёРЅРІРµРЅС‚Р°СЂСЊ
 
     private void Awake()
     {
-        // Получаем ссылки на компоненты
+        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃСЃС‹Р»РѕРє РЅР° UI РєРѕРјРїРѕРЅРµРЅС‚С‹ СЃР»РѕС‚Р°
         slotImage = transform.GetChild(1).GetComponent<Image>(); // Image
         slotText = transform.GetChild(0).GetComponent<Text>(); // Text
-        inventory = FindObjectOfType<Inventory>(); // Найти инвентарь в сцене
+        inventory = FindObjectOfType<Inventory>(); // РџРѕР»СѓС‡Р°РµРј РёРЅРІРµРЅС‚Р°СЂСЊ РІ СЃС†РµРЅРµ
     }
 
-    // Обработка клика на слот
+    // Р РµР°Р»РёР·Р°С†РёСЏ СЃРѕР±С‹С‚РёСЏ РєР»РёРєР° РЅР° СЃР»РѕС‚Рµ
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Проверяем, нажата ли левая кнопка мыши
+        // РџСЂРѕРІРµСЂСЏРµРј, Р±С‹Р» Р»Рё РєР»РёРє Р»РµРІРѕР№ РєРЅРѕРїРєРѕР№ РјС‹С€Рё
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            // Если слот пуст, то добавляем в него предмет
+            // Р•СЃР»Рё СЃР»РѕС‚ РїСѓСЃС‚, РїС‹С‚Р°РµРјСЃСЏ РґРѕР±Р°РІРёС‚СЊ РІ РЅРµРіРѕ РїСЂРµРґРјРµС‚
             if (isEmpty)
             {
                 if (inventory.currentSlot != null)
                 {
-                    // Перемещение предмета
+                    // РџРµСЂРµРјРµС‰Р°РµРј РїСЂРµРґРјРµС‚ РёР· С‚РµРєСѓС‰РµРіРѕ СЃР»РѕС‚Р° РІ СЌС‚РѕС‚ СЃР»РѕС‚
                     inventory.MoveItem(inventory.currentSlot, this);
-                    inventory.currentSlot = null; // Сбрасываем текущее состояние
+                    inventory.currentSlot = null; // РћС‡РёС‰Р°РµРј СЃСЃС‹Р»РєСѓ РЅР° С‚РµРєСѓС‰РёР№ СЃР»РѕС‚
                 }
             }
             else
             {
-                // Если слот занят, сохраняем его как текущий
+                // Р•СЃР»Рё СЃР»РѕС‚ Р·Р°РЅСЏС‚, СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РµРіРѕ РєР°Рє С‚РµРєСѓС‰РёР№ СЃР»РѕС‚
                 inventory.currentSlot = this;
             }
         }
-        // Проверяем, нажата ли правая кнопка мыши
+        // РџСЂРѕРІРµСЂСЏРµРј, Р±С‹Р» Р»Рё РєР»РёРє РїСЂР°РІРѕР№ РєРЅРѕРїРєРѕР№ РјС‹С€Рё
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // Если слот не пуст, очищаем его
+            // Р•СЃР»Рё СЃР»РѕС‚ РЅРµ РїСѓСЃС‚РѕР№, РѕС‡РёС‰Р°РµРј РµРіРѕ
             if (!isEmpty)
             {
                 inventory.ClearSlot(this);
@@ -53,28 +53,28 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // Метод для перемещения предмета в этот слот
+    // РњРµС‚РѕРґ РґР»СЏ РїРµСЂРµРјРµС‰РµРЅРёСЏ РїСЂРµРґРјРµС‚Р° РІ СЌС‚РѕС‚ СЃР»РѕС‚
     public void MoveItem(Sprite newSprite)
     {
-        // Обновляем спрайт
+        // РџСЂРёСЃРІР°РёРІР°РµРј РЅРѕРІС‹Р№ СЃРїСЂР°Р№С‚ РёР·РѕР±СЂР°Р¶РµРЅРёСЋ СЃР»РѕС‚Р°
         slotImage.sprite = newSprite;
 
-        // Устанавливаем флаг isEmpty в false
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі isEmpty РІ false
         isEmpty = false;
     }
 
-    // Метод для очистки слота
+    // РњРµС‚РѕРґ РґР»СЏ РѕС‡РёСЃС‚РєРё СЃР»РѕС‚Р°
     public void ClearSlot()
     {
-        slotImage.sprite = null;
+        slotImage.sprite = null; // РЈР±РёСЂР°РµРј СЃРїСЂР°Р№С‚ РёР· СЃР»РѕС‚Р°
 
-        // Проверяем, не является ли slotText null
+        // Р•СЃР»Рё slotText СЃСѓС‰РµСЃС‚РІСѓРµС‚, РѕС‡РёС‰Р°РµРј РµРіРѕ С‚РµРєСЃС‚
         if (slotText != null)
         {
             slotText.text = "";
         }
 
-        isEmpty = true;
+        isEmpty = true; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃР»РѕС‚ РєР°Рє РїСѓСЃС‚РѕР№
     }
-
 }
+
